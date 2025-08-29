@@ -1,0 +1,24 @@
+meta {
+  name: Mail
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://mail.infomaniak.com/api/mail/5ef2dbd4-a45b-308b-8711-e07544cb3337/folder/eJzz9HPyjwAABGYBgQ--/message/5?prefered_format=plain
+  body: none
+  auth: bearer
+}
+
+params:query {
+  prefered_format: plain
+}
+
+headers {
+  Content-Type: application/json
+  ~Cookie: TOKEN=rSGCI8RovI9nXfe5aB2GvOgbgnR7NBfK3LvRQvTH
+}
+
+auth:bearer {
+  token: {{INFOMANIAK_TOKEN}}
+}
