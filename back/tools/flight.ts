@@ -1,20 +1,15 @@
-import { GPTTool } from "./tool.ts";
-import { FunctionTool } from "./tool.ts";
+import {GPTTool} from "./tool.ts";
+import {FunctionTool} from "./tool.ts";
 
 const INFOMANIAK_TOKEN = Deno.env.get("INFOMANIAK_TOKEN");
 if (!INFOMANIAK_TOKEN) throw new Error("Missing INFOMANIAK_TOKEN in env");
 
 const flightToolProperties = {
-  Flight_segments: {
+  segments: {
     type: "array",
     items: {
       type: "object",
       properties: {
-        title: {
-          type: "string",
-          description:
-            "The title of the flight segment in the format From <departure> to <arrival>",
-        }, // "De Mulhouse à Skopje"
         fromCode: {
           type: "string",
           description: "The full name of the departure airport.",
@@ -40,21 +35,21 @@ const flightToolProperties = {
           type: "string",
           description: "The airline operating the flight.",
         }, // "Wizz Air"
-        flightNumber: { type: "string", description: "The flight number." }, // "W64793"
+        flightNumber: {type: "string", description: "The flight number."}, // "W64793"
       },
       description: "Information about one flight",
       required: ["items"],
       additionalProperties: false,
     },
   },
-  confirmationCode: { type: "string" },
+  confirmationCode: {type: "string"},
   passengers: {
     type: "array",
     items: {
       type: "object",
       properties: {
-        lastname: { type: "string" },
-        firstname: { type: "string" },
+        lastname: {type: "string"},
+        firstname: {type: "string"},
       },
       required: ["items"],
       additionalProperties: false,
@@ -67,7 +62,7 @@ const flightToolProperties = {
 export class FlightTool implements GPTTool {
   name = "flight_tool";
   systemDescription =
-    "Gets information out of a flight ticket confirmation email.";
+    "Gets information out of a flight ticket confirmation email. Translate all the arguments with the original mail language.";
   getResponseTool(): FunctionTool {
     return {
       type: "function",
@@ -86,6 +81,6 @@ export class FlightTool implements GPTTool {
     };
   }
   async handleCall(..._args: any[]): Promise<string> {
-    return JSON.stringify(_args[0], null, 2);
+    return JSON.stringify({action: "flight", data: _args[0]}, null, 2);
   }
 }

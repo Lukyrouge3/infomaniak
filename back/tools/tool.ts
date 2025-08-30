@@ -1,4 +1,4 @@
-import { FlightTool } from "./flight.ts";
+import {FlightTool} from "./flight.ts";
 
 const INFOMANIAK_TOKEN = Deno.env.get("INFOMANIAK_TOKEN");
 if (!INFOMANIAK_TOKEN) throw new Error("Missing INFOMANIAK_TOKEN in env");
@@ -29,17 +29,17 @@ export interface FunctionTool {
     parameters: {
       type: string;
       strict?: boolean;
-      properties: { [key: string]: unknown };
+      properties: {[key: string]: unknown};
       required?: string[];
       additionalProperties: boolean;
     };
   };
 }
 
-export async function call_gpt(messages: { content: string; role: string }[]) {
+export async function call_gpt(messages: {content: string; role: string}[]) {
   const request = new Request(API_URL, {
     method: "POST",
-    headers: { ...HEADERS },
+    headers: {...HEADERS},
     body: JSON.stringify({
       messages,
       model: "qwen3",
@@ -65,7 +65,7 @@ export async function call_gpt(messages: { content: string; role: string }[]) {
           content: string | null;
           tool_calls?: {
             id: string;
-            function: { name: string; arguments: string };
+            function: {name: string; arguments: string};
           }[];
         };
       }>;
@@ -112,7 +112,7 @@ export async function call_gpt(messages: { content: string; role: string }[]) {
 
 async function call_tool(tool_call: {
   id: string;
-  function: { name: string; arguments: string };
+  function: {name: string; arguments: string};
 }) {
   const tool = GPT_TOOLS.find((t) => t.name === tool_call.function.name);
   if (!tool) {
