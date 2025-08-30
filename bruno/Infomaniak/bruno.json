@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Infomaniak",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
