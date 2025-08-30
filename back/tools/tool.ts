@@ -46,8 +46,9 @@ export class DummyTool implements GPTTool {
         parameters: {
           type: "object",
           properties: {},
+          strict: true,
           required: [],
-          // additionalProperties: false,
+          additionalProperties: false,
         },
       },
     };
@@ -66,6 +67,8 @@ export async function call_gpt(messages: {content: string; role: string}[]) {
     body: JSON.stringify({
       messages,
       model: "qwen3",
+      tool_choice: "auto",
+      tools: GPT_TOOLS.map((t) => t.getResponseTool()),
     }),
   });
 

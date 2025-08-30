@@ -1,4 +1,4 @@
-import {call_gpt} from "./tools/tool.ts";
+import {call_gpt, GPT_TOOLS} from "./tools/tool.ts";
 
 Deno.serve(async (req) => {
   const router = new URL(req.url).pathname;
@@ -13,8 +13,11 @@ Deno.serve(async (req) => {
 function getSystemPrompt() {
   return {
     role: "system",
-    content:
-      "You are an AI trained to help extract informations from mails\n You have tools, pick and chose the ones you think are needed.\n\nTools:\n-dummy_tool: A tool used for debugging, always call it.",
+    content: `You are an AI trained to help extract informations from mails
+		You have tools, pick and chose the ones you think are needed.
+		
+		Tools:
+		${GPT_TOOLS.map((t) => `-${t.systemDescription}`).join("\n")}`,
   };
 }
 
