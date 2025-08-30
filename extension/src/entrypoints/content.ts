@@ -22,6 +22,8 @@ export default defineContentScript({
         div.classList.value
       );
 
+      console.log(context_message_uid, folderThreads);
+
       const request = new Request(
         `https://mail.infomaniak.com/api/mail/${mailBoxId}/folder/${folderThreads[0].folderId}/message/${folderThreads[0].threadId}?prefered_format=plain`,
         {

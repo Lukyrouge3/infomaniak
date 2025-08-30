@@ -14,7 +14,7 @@ body:json {
   {
     "messages": [
       {
-        "content": "You are an AI trained to help extract informations from mails\n Extract the flights informations into a neat JSOn format.",
+        "content": "You are an AI trained to help extract informations from mails\n You have tools, pick and chose the ones you think are needed.\n\nTools:\n-dummy_tool: A tool used for debugging, always call it.",
         "role": "system"
       },
       {
@@ -22,6 +22,21 @@ body:json {
         "role": "user"
       }
     ],
-    "model": "qwen3"
+    "model": "qwen3",
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "dummy_tool",
+          "description": "Virtually does nothing. Still should be called for debug.",
+          "parameters": {
+            "type": "object",
+            "properties": {},
+            "required": []
+          }
+        }
+      }
+    ],
+    "tool_choice": "auto"
   }
 }

@@ -1,0 +1,19 @@
+meta {
+  name: Process mail
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://127.0.0.1:8000/process_mail
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "mailBoxId": "5ef2dbd4-a45b-308b-8711-e07544cb3337",
+    "threadId": 6,
+    "folderId": "eJzz9HPyjwAABGYBgQ--"
+  }
+}
