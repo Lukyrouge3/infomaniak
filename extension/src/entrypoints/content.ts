@@ -24,23 +24,26 @@ export default defineContentScript({
 
       console.log(context_message_uid, folderThreads);
 
-      const request = new Request(
-        `https://mail.infomaniak.com/api/mail/${mailBoxId}/folder/${folderThreads[0].folderId}/message/${folderThreads[0].threadId}?prefered_format=plain`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${INFOMANIAK_TOKEN}`,
-          },
-        }
-      );
+      const request = new Request(`http://127.0.0.1:8000/process_mail`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${INFOMANIAK_TOKEN}`,
+        },
+
+        body: JSON.stringify({
+          mailBoxId,
+          folderId: folderThreads[0].folderId,
+          threadId: folderThreads[0].threadId,
+        }),
+      });
       try {
         const response = await fetch(request);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const {data} = await response.json();
-        console.log("Fetched message data:", JSON.stringify(data.body.value));
+        const data = await response.text();
+        console.log("Fetched message data:", JSON.stringify(data));
       } catch (error) {
         console.error("Error fetching message data:", error);
       }
