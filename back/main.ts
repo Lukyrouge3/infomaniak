@@ -1,12 +1,3 @@
-interface GPTTool {
-  name: string;
-  systemDescription: string;
-  reactionEmoji?: string;
-
-  getResponseTool(): any;
-  handleCall(...args: any[]): Promise<string>;
-}
-
 Deno.serve(async (req) => {
   const router = new URL(req.url).pathname;
   switch (router) {
