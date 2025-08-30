@@ -76,25 +76,3 @@ async function getMail(
     throw error;
   }
 }
-
-async function processMail(req: Request) {
-  if (req.method !== "POST") {
-    return new Response("Method Not Allowed", {status: 405});
-  }
-
-  const body = (await req.json()) as {
-    mailBoxId: string;
-    folderId: string;
-    threadId: string;
-  };
-
-  try {
-    const mail = await getMail(body.mailBoxId, body.folderId, body.threadId);
-    const messages = [getSystemPrompt(), {role: "user", content: `${mail}`}];
-
-    const response = await call_gpt(messages);
-    return new Response(response, {status: 200});
-  } catch (_error) {
-    return new Response("Failed to fetch mail", {status: 500});
-  }
-}
