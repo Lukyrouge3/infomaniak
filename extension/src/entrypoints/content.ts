@@ -1,4 +1,6 @@
 import {FlightItinerary, renderFlightsCard} from "@/lib/actions/flight";
+import {TrainItinerary, renderTrainsCard} from "@/lib/actions/train";
+import { render } from "svelte/server";
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -95,6 +97,11 @@ async function parseResponse(data: string) {
       case "flight": {
         const itinerary: FlightItinerary = json.data;
         renderFlightsCard(container, "start", itinerary);
+        break;
+      }
+      case "train": {
+        const itinerary: TrainItinerary = json.data;
+        renderTrainsCard(container, "start", itinerary);
         break;
       }
       default:
