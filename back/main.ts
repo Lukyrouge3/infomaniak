@@ -39,6 +39,8 @@ function getSystemPrompt() {
     content: `You are an AI trained to help extract informations from mails
 		You have tools, pick and chose the ones you think are needed.
 		
+		If you decide not to use any tool, just answer "OK".
+		
 		Tools:
 		${GPT_TOOLS.map((t) => `-${t.systemDescription}`).join("\n")}`,
   };
