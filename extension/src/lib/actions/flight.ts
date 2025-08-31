@@ -249,7 +249,9 @@ export function renderFlightsCard(
 
     h.setAttribute("role", "button");
     h.setAttribute("tabindex", "0");
-    h.setAttribute("aria-expanded", "true"); // ouvert par défaut
+    h.setAttribute("aria-expanded", "false"); // ouvert par défaut
+
+    grid.hidden = true;
 
     const toggle = () => {
       const expanded = h.getAttribute("aria-expanded") === "true";

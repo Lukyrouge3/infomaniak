@@ -80,7 +80,7 @@ export class FlightTool implements GPTTool {
       },
     };
   }
-  async handleCall(..._args: any[]): Promise<string> {
-    return JSON.stringify({action: "flight", data: _args[0]}, null, 2);
+  async handleCall(data: unknown): Promise<string> {
+    return JSON.stringify({action: "flight", data}, null, 2);
   }
 }
