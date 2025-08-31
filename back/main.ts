@@ -1,17 +1,17 @@
-import {call_gpt, GPT_TOOLS} from "./tools/tool.ts";
-import {Application, Router, send} from "https://deno.land/x/oak/mod.ts";
-import {oakCors} from "https://deno.land/x/cors/mod.ts";
+import { call_gpt, GPT_TOOLS } from "./tools/tool.ts";
+import { Application, Router, send } from "https://deno.land/x/oak/mod.ts";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 
 export const CACHE = new Map<
   string,
-  {action: string; data: unknown} | string
+  { action: string; data: unknown } | string
 >();
 
 const router = new Router();
 router.post("/process_mail", async (ctx) => {
   try {
     const body = ctx.request.body;
-    const {mailBoxId, folderId, threadId} = (await body.json()) as {
+    const { mailBoxId, folderId, threadId } = (await body.json()) as {
       mailBoxId: string;
       folderId: string;
       threadId: string;
@@ -24,12 +24,12 @@ router.post("/process_mail", async (ctx) => {
         "content-type",
         "application/json; charset=utf-8"
       );
-      ctx.response.body = JSON.stringify(CACHE.get(id));
+      ctx.response.body = CACHE.get(id);
       return;
     }
 
     const mail = await getMail(mailBoxId, folderId, threadId);
-    const messages = [getSystemPrompt(), {role: "user", content: `${mail}`}];
+    const messages = [getSystemPrompt(), { role: "user", content: `${mail}` }];
 
     const response = await call_gpt(messages);
 
@@ -49,7 +49,7 @@ const withCors = oakCors();
 app.use(withCors);
 app.use(router.routes());
 
-await app.listen({port: 8000});
+await app.listen({ port: 8000 });
 
 function getSystemPrompt() {
   return {
@@ -89,7 +89,7 @@ async function getMail(
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const {data} = await response.json();
+    const { data } = await response.json();
     return data.body.value;
   } catch (error) {
     console.error("Error fetching message data:", error);
