@@ -10,6 +10,7 @@ const INFOMANIAK_TOKEN =
 async function doStuff(ctx: any) {
   console.log("Doing stuff on Infomaniak Mail");
   document.getElementById("infk-flight-card-wrapper")?.remove();
+  document.getElementById("infk-train-card-wrapper")?.remove();
 
   const {mailBoxId} = await browser.storage.local.get("mailBoxId");
   if (!mailBoxId) {
