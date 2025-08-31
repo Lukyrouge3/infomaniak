@@ -1,4 +1,6 @@
 import {FlightItinerary, renderFlightsCard} from "@/lib/actions/flight";
+import {TrainItinerary, renderTrainsCard} from "@/lib/actions/train";
+import { render } from "svelte/server";
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -8,6 +10,7 @@ const INFOMANIAK_TOKEN =
 async function doStuff(ctx: any) {
   console.log("Doing stuff on Infomaniak Mail");
   document.getElementById("infk-flight-card-wrapper")?.remove();
+  document.getElementById("infk-train-card-wrapper")?.remove();
 
   const {mailBoxId} = await browser.storage.local.get("mailBoxId");
   if (!mailBoxId) {
@@ -95,6 +98,11 @@ async function parseResponse(data: string) {
       case "flight": {
         const itinerary: FlightItinerary = json.data;
         renderFlightsCard(container, "start", itinerary);
+        break;
+      }
+      case "train": {
+        const itinerary: TrainItinerary = json.data;
+        renderTrainsCard(container, "start", itinerary);
         break;
       }
       default:
