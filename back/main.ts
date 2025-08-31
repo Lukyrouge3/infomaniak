@@ -2,6 +2,11 @@ import {call_gpt, GPT_TOOLS} from "./tools/tool.ts";
 import {Application, Router, send} from "https://deno.land/x/oak/mod.ts";
 import {oakCors} from "https://deno.land/x/cors/mod.ts";
 
+export const CACHE = new Map<
+  string,
+  {action: string; data: unknown} | string
+>();
+
 const router = new Router();
 router.post("/process_mail", async (ctx) => {
   try {
@@ -11,6 +16,17 @@ router.post("/process_mail", async (ctx) => {
       folderId: string;
       threadId: string;
     };
+    const id = `${mailBoxId}-${folderId}-${threadId}`;
+    if (CACHE.has(id)) {
+      console.log("Cache hit for", id);
+      ctx.response.status = 200;
+      ctx.response.headers.set(
+        "content-type",
+        "application/json; charset=utf-8"
+      );
+      ctx.response.body = JSON.stringify(CACHE.get(id));
+      return;
+    }
 
     const mail = await getMail(mailBoxId, folderId, threadId);
     const messages = [getSystemPrompt(), {role: "user", content: `${mail}`}];
@@ -20,6 +36,8 @@ router.post("/process_mail", async (ctx) => {
     ctx.response.status = 200;
     ctx.response.headers.set("content-type", "text/plain; charset=utf-8");
     ctx.response.body = response;
+
+    CACHE.set(id, response);
   } catch (_err) {
     console.error(_err);
     ctx.response.status = 500;
