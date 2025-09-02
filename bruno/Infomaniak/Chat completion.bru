@@ -1,5 +1,5 @@
 meta {
-  name: LLM Test
+  name: Chat completion
   type: http
   seq: 1
 }
@@ -7,7 +7,12 @@ meta {
 post {
   url: https://api.infomaniak.com/2/ai/105923/openai/v1/chat/completions
   body: json
-  auth: inherit
+  auth: bearer
+}
+
+auth:bearer {
+  token: 5-ayaHdeQllnC751xG5u7uMfx118Scfyq6i1nzYgQkCWTjQ6oDSjwdU8AyAbrSvMI4mt3P1ZaMf4WzXE
+  5-ayaHdeQllnC751xG5u7uMfx118Scfyq6i1nzYgQkCWTjQ6oDSjwdU8AyAbrSvMI4mt3P1ZaMf4WzXE
 }
 
 body:json {
@@ -28,7 +33,7 @@ body:json {
         "type": "function",
         "function": {
           "name": "dummy_tool",
-          "description": "Virtually does nothing. Still should be called for debug.",
+          "description": "does nothing only for debug",
           "parameters": {
             "type": "object",
             "properties": {},
@@ -39,4 +44,8 @@ body:json {
     ],
     "tool_choice": "auto"
   }
+}
+
+settings {
+  encodeUrl: true
 }
